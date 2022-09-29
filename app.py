@@ -70,5 +70,6 @@ def contour(surface: rhino3dm.Surface , n: rhino3dm.Point):
     curves.append(surface.IsoCurve(1, v))
     return curves
 
+
 if __name__ == "__main__":
     app.run()
