@@ -44,12 +44,13 @@ def multiply(a: float, b: float):
     return a*b
 
 @hops.component(
-        "/contour",
-        name="Contour",
-        description="Contour a surface",
+        "/contourOffset",
+        name="ContourOffset",
+        description="Contour a surface and get contour offsets",
         inputs=[
             hs.HopsSurface("Surface","S","Surface to evaluate"),
-            hs.HopsPoint("N", "N", "Number of contours",default=0),
+            hs.HopsPoint("uv", "uv", "uv coordinates on surface",default=0),
+            hs.HopsNumber("Distance", "d", "Offset Distance")
         ],
         outputs=[
             hs.HopsCurve("Curves","C","Contour Curves new")
@@ -57,14 +58,14 @@ def multiply(a: float, b: float):
 )
 
 
-def contour(surface: rhino3dm.Surface , n: rhino3dm.Point):
-    u = n.X
-    v = n.Y
+def contourOffset(surface: rhino3dm.Surface , uv: rhino3dm.Point, d: float):
+    u = uv.X
+    v = uv.Y
     curves = []
-    for i in np.arange(u-0.2, u+0.21, 0.2):
+    for i in np.arange(u-d, u+d+0.1, d):
         curves.append(surface.IsoCurve(0, i))
 
-    for i in np.arange(v-0.2, v+0.21, 0.2):
+    for i in np.arange(v-d, v+d+0.1, d):
         curves.append(surface.IsoCurve(1, i))
 
     curves.append(surface.IsoCurve(1, v))
